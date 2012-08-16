@@ -15,6 +15,14 @@ public:
 	Voicer( int num );
 	~Voicer();
 
+	/*
+	 * Return current output sample.
+	 */
+	float evaluate();
+
+	void noteOn( int note );
+	void noteOff( int note );
+
 private:
 	int numVoices;
 };

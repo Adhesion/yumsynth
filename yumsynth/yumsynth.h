@@ -11,9 +11,11 @@
 
 #include "public.sdk/source/vst2.x/audioeffectx.h"
 
+#include <vector>
+
 class Voicer;
 
-enum
+enum yParams
 {
 	arrangement = 0,
 	numYParams,
@@ -32,7 +34,9 @@ public:
 	yumsynth( audioMasterCallback master );
 	~yumsynth();
 
-	void processReplacing( float** inputs, float** outputs, VstInt32 sampleFrames );
+	void processReplacing( float** inputs, float** outputs,
+		VstInt32 sampleFrames );
+	VstInt32 processEvents( VstEvents* events );
 	
 	void setParameter( VstInt32 index, float value );
 	float getParameter( VstInt32 index );
@@ -49,6 +53,13 @@ public:
 	VstInt32 getVendorVersion();
 
 private:
+	// in order to deal with deltaframes (ie that midi events will happen in
+	// the "future") we keep a list of pending midi events. this will dispatch
+	// one to the voicer (called by processReplacing() if it's in the current
+	// block of samples)
+	void dispatchMIDI( VstMidiEvent midiEvent );
+	std::vector<VstMidiEvent> midiEvents;
+
 	char name[ kVstMaxEffectNameLen ];
 	char vendor[ kVstMaxVendorStrLen ];
 	VstInt32 version;
