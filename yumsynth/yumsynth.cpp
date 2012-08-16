@@ -58,7 +58,7 @@ void yumsynth::processReplacing( float** inputs, float** outputs,
 		std::vector< VstMidiEvent>::iterator it = midiEvents.begin();
 		while( it != midiEvents.end() )
 		{
-			if ( it->deltaFrames == i )
+			if ( it->deltaFrames <= i )
 			{
 				dispatchMIDI( *it );
 				it = midiEvents.erase( it );
@@ -96,6 +96,36 @@ VstInt32 yumsynth::processEvents( VstEvents* events )
 	return 1;
 }
 
+void yumsynth::resume()
+{
+	printf( "resume\n" );
+}
+
+void yumsynth::setParameter( VstInt32 index, float value )
+{
+	parameters[ index ] = value;
+}
+
+float yumsynth::getParameter( VstInt32 index )
+{
+	return parameters[ index ];
+}
+
+void yumsynth::getParameterLabel( VstInt32 index, char* text )
+{
+	strcpy( text, "" );
+}
+
+void yumsynth::getParameterDisplay( VstInt32 index, char* text )
+{
+	strcpy( text, "" );
+}
+
+void yumsynth::getParameterName( VstInt32 index, char* text )
+{
+	strcpy( text, "" );
+}
+
 void yumsynth::setProgramName( char* name )
 {
 	strcpy( programs[ curProgram ].name, name );
@@ -131,5 +161,28 @@ VstInt32 yumsynth::getVendorVersion()
 
 void yumsynth::dispatchMIDI( VstMidiEvent midiEvent )
 {
-
+	// highest 4 bits = what sort of midi event (note on, off, etc.)
+	int type = midiEvent.midiData[ 0 ] & 0xf0;
+	// note on
+	if ( type == 0x90 )
+	{
+		int note = midiEvent.midiData[ 1 ] & 0x7f;
+		int vel = midiEvent.midiData[ 2 ] & 0x7f;
+		if ( vel > 0 )
+		{
+			voicer->noteOn( note );
+		}
+		else
+		{
+			// interpret vel=0 as note off for now
+			voicer->noteOff( note );
+		}
+	}
+	// note off
+	else if ( type == 0x80 )
+	{
+		int note = midiEvent.midiData[ 1 ] & 0x7f;
+		voicer->noteOff( note );
+	}
+	// maybe handle pitchbend (0xe0)
 }

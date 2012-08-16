@@ -53,6 +53,9 @@
     <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.h">
       <Filter>VST source</Filter>
     </ClInclude>
+    <ClInclude Include="Voice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yumsynth.cpp">
@@ -72,6 +75,9 @@
     </ClCompile>
     <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\vstplugmain.cpp">
       <Filter>VST source</Filter>
+    </ClCompile>
+    <ClCompile Include="Voice.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

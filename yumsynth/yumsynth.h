@@ -36,7 +36,17 @@ public:
 
 	void processReplacing( float** inputs, float** outputs,
 		VstInt32 sampleFrames );
+	/*
+	 * Get events and add them to our own queue (if MIDI) to be processed in
+	 * the next processReplacing call.
+	 */
 	VstInt32 processEvents( VstEvents* events );
+
+	/*
+	 * Called when audio resumes (including starts?)
+	 * so we can determine the samplerate here.
+	 */
+	void resume();
 	
 	void setParameter( VstInt32 index, float value );
 	float getParameter( VstInt32 index );

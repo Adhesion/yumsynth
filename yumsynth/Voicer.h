@@ -1,13 +1,15 @@
 /*
  * Voicer.h
  *
- * Handles polyphony, sums individual operator voices.
+ * Handles polyphony, sums individual voices.
  *
  * @author Andrew Ford
  */
 
 #ifndef __VOICER_H
 #define __VOICER_H
+
+class Voice;
 
 class Voicer
 {
@@ -23,8 +25,14 @@ public:
 	void noteOn( int note );
 	void noteOff( int note );
 
+	void setSamplerate( int sr );
+
 private:
+	Voice* voices;
 	int numVoices;
+
+	// midi note -> frequency
+	float* frequencyTable;
 };
 
 #endif
