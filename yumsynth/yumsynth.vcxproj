@@ -43,6 +43,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_USRDLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\vstsdk2.4;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -69,11 +70,20 @@
     <None Include="yumsynth.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\vstsdk2.4\pluginterfaces\vst2.x\aeffect.h" />
+    <ClInclude Include="..\..\vstsdk2.4\pluginterfaces\vst2.x\aeffectx.h" />
+    <ClInclude Include="..\..\vstsdk2.4\pluginterfaces\vst2.x\vstfxstore.h" />
+    <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\aeffeditor.h" />
+    <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.h" />
+    <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.h" />
     <ClInclude Include="Operator.h" />
     <ClInclude Include="Voicer.h" />
     <ClInclude Include="yumsynth.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.cpp" />
+    <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.cpp" />
+    <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\vstplugmain.cpp" />
     <ClCompile Include="Operator.cpp" />
     <ClCompile Include="Voicer.cpp" />
     <ClCompile Include="yumsynth.cpp" />

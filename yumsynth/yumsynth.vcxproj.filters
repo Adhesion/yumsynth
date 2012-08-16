@@ -35,6 +35,24 @@
     <ClInclude Include="Operator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\vstsdk2.4\pluginterfaces\vst2.x\aeffect.h">
+      <Filter>VST interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vstsdk2.4\pluginterfaces\vst2.x\aeffectx.h">
+      <Filter>VST interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vstsdk2.4\pluginterfaces\vst2.x\vstfxstore.h">
+      <Filter>VST interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\aeffeditor.h">
+      <Filter>VST source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.h">
+      <Filter>VST source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.h">
+      <Filter>VST source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yumsynth.cpp">
@@ -45,6 +63,15 @@
     </ClCompile>
     <ClCompile Include="Voicer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.cpp">
+      <Filter>VST source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.cpp">
+      <Filter>VST source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\vstplugmain.cpp">
+      <Filter>VST source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
