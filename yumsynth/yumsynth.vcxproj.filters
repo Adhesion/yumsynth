@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="VST source">
+      <UniqueIdentifier>{a8a2f33a-46e5-4a0d-9781-da595a996a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VST interface">
+      <UniqueIdentifier>{324217e6-821a-4caf-8de5-e26b98747a0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="yumsynth.def">
@@ -34,10 +40,10 @@
     <ClCompile Include="yumsynth.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Voice.cpp">
+    <ClCompile Include="Operator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Operator.cpp">
+    <ClCompile Include="Voicer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
