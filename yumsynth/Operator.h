@@ -51,6 +51,7 @@ public:
 
 private:
 	float frequency;
+	float frequencyMultiplier;
 	float sineInput;
 	float sineIncrement;
 

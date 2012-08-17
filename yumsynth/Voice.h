@@ -39,8 +39,6 @@ public:
 	bool isPlaying();
 
 private:
-	bool playing;
-
 	int note;
 	int samplerate;
 
@@ -48,8 +46,6 @@ private:
 	int numOperators;
 	std::vector< Operator* > operators;
 	std::vector< Operator* > slots;
-
-	float frequency;
 
 	// gotten from voicer at init
 	float* frequencyTable;

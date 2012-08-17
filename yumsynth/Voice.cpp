@@ -19,13 +19,10 @@ Voice::Voice( float* freq, int numOps )
 	// host
 	samplerate = 48000;
 
-	playing = false;
-
-	frequency = 0.0f;
-
 	for( int i = 0; i < numOperators; i++ )
 	{
 		Operator* o = new Operator();
+		o->setSamplerate( samplerate );
 		operators.push_back( o );
 	}
 }
@@ -59,15 +56,20 @@ void Voice::noteOn( int n )
 	}
 	note = n;
 	
-	frequency = frequencyTable[ note ];
-	
-	playing = true;
+	float frequency = frequencyTable[ note ];
+	for( unsigned int i = 0; i < operators.size(); i++ )
+	{
+		operators[ i ]->noteOn( frequency );
+	}
 }
 
 void Voice::noteOff()
 {
 	note = -1;
-	//playing = false;
+	for( unsigned int i = 0; i < operators.size(); i++ )
+	{
+		operators[ i ]->noteOff();
+	}
 }
 
 void Voice::setSamplerate( int sr )
@@ -86,5 +88,6 @@ int Voice::getNote()
 
 bool Voice::isPlaying()
 {
-	return playing;
+	// TODO aggregate values from operators - if one is playing, voice is playing
+	return false;
 }
