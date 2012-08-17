@@ -33,7 +33,7 @@ Voicer::Voicer( int num )
 
 	for( int i = 0; i < numVoices; i++ )
 	{
-		voices.push_back( new Voice( frequencyTable ) );
+		voices.push_back( new Voice( frequencyTable, 4 ) );
 	}
 }
 
