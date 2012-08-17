@@ -9,6 +9,8 @@
 #include "Voicer.h"
 #include "Voice.h"
 
+#include <stdio.h>
+
 float frequencyTable[ 128 ];
 
 Voicer::Voicer( int num )
@@ -29,16 +31,18 @@ Voicer::Voicer( int num )
 		note *= root;
 	}
 
-	voices[ numVoices ];
 	for( int i = 0; i < numVoices; i++ )
 	{
-		voices[ i ] = Voice( frequencyTable );
+		voices.push_back( new Voice( frequencyTable ) );
 	}
 }
 
 Voicer::~Voicer()
 {
-	delete[] voices;
+	for( int i = 0; i < numVoices; i++ )
+	{
+		delete voices[ i ];
+	}
 	delete[] frequencyTable;
 }
 
@@ -47,7 +51,7 @@ float Voicer::evaluate()
 	float temp = 0.0f;
 	for( int i = 0; i < numVoices; i++ )
 	{
-		temp += voices[ i ].evaluate();
+		temp += voices[ i ]->evaluate();
 	}
 	return temp;
 }
@@ -57,7 +61,7 @@ void Voicer::noteOn( int note )
 	// check if note is already playing, if it is ignore
 	for( int i = 0; i < numVoices; i++ )
 	{
-		if ( voices[ i ].getNote() == note )
+		if ( voices[ i ]->getNote() == note )
 		{
 			return;
 		}
@@ -66,9 +70,9 @@ void Voicer::noteOn( int note )
 	// play note in a free voice
 	for( int i = 0; i < numVoices; i++ )
 	{
-		if ( !voices[ i ].isPlaying() )
+		if ( !voices[ i ]->isPlaying() )
 		{
-			voices[ i ].noteOn( note );
+			voices[ i ]->noteOn( note );
 			return;
 		}
 	}
@@ -79,9 +83,9 @@ void Voicer::noteOff( int note )
 	// find voice playing this note & turn it off
 	for( int i = 0; i < numVoices; i++ )
 	{
-		if ( voices[ i ].getNote() == note )
+		if ( voices[ i ]->getNote() == note )
 		{
-			voices[ i ].noteOff();
+			voices[ i ]->noteOff();
 			// based on noteOn() we already know only one voice will be
 			// playing a particular note, so we can exit here
 			return;
@@ -93,6 +97,6 @@ void Voicer::setSamplerate( int sr )
 {
 	for( int i = 0; i < numVoices; i++ )
 	{
-		voices[ i ].setSamplerate( sr );
+		voices[ i ]->setSamplerate( sr );
 	}
 }

@@ -9,6 +9,8 @@
 #ifndef __VOICER_H
 #define __VOICER_H
 
+#include <vector>
+
 class Voice;
 
 class Voicer
@@ -28,7 +30,7 @@ public:
 	void setSamplerate( int sr );
 
 private:
-	Voice* voices;
+	std::vector< Voice* > voices;
 	int numVoices;
 
 	// midi note -> frequency

@@ -15,7 +15,7 @@ AudioEffect* createEffectInstance( audioMasterCallback master )
 }
 
 yumsynth::yumsynth( audioMasterCallback master )
-	: AudioEffectX( master, numYParams, numYPrograms )
+	: AudioEffectX( master, numYPrograms, numYParams )
 {
 	strcpy( name, "yumsynth" );
 	strcpy( vendor, "Adhesion" );
@@ -37,8 +37,10 @@ yumsynth::yumsynth( audioMasterCallback master )
 	setNumOutputs( numChannels );
 	canProcessReplacing( true );
 
-	setUniqueID( 'yums' );
+	isSynth();
 
+	setUniqueID( 'yums' );
+	
 	// 6 voices for now
 	voicer = new Voicer( 6 );
 }
@@ -98,7 +100,7 @@ VstInt32 yumsynth::processEvents( VstEvents* events )
 
 void yumsynth::resume()
 {
-	printf( "resume\n" );
+	AudioEffectX::resume();
 }
 
 void yumsynth::setParameter( VstInt32 index, float value )
@@ -159,6 +161,28 @@ VstInt32 yumsynth::getVendorVersion()
 	return version;
 }
 
+VstInt32 yumsynth::getNumMidiInputChannels()
+{
+	return 1;
+}
+
+VstInt32 yumsynth::getNumMidiOutputChannels()
+{
+	return 0;
+}
+
+VstInt32 yumsynth::canDo( char* string )
+{
+	if ( !strcmp( string, "receiveVstEvents" ) )
+		return 1;
+	if ( !strcmp( string, "receiveVstMidiEvent" ) )
+		return 1;
+	if ( !strcmp( string, "midiProgramNames" ) )
+		return -1;
+
+	return 0;
+}
+
 void yumsynth::dispatchMIDI( VstMidiEvent midiEvent )
 {
 	// highest 4 bits = what sort of midi event (note on, off, etc.)
@@ -184,5 +208,5 @@ void yumsynth::dispatchMIDI( VstMidiEvent midiEvent )
 		int note = midiEvent.midiData[ 1 ] & 0x7f;
 		voicer->noteOff( note );
 	}
-	// maybe handle pitchbend (0xe0)
+	// maybe handle pitchbend (0xe0), also sustain?
 }

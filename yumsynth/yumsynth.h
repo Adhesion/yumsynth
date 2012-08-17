@@ -62,6 +62,11 @@ public:
 	bool getVendorString( char* vString );
 	VstInt32 getVendorVersion();
 
+	VstInt32 getNumMidiInputChannels ();
+	VstInt32 getNumMidiOutputChannels ();
+
+	VstInt32 canDo( char* string );
+
 private:
 	// in order to deal with deltaframes (ie that midi events will happen in
 	// the "future") we keep a list of pending midi events. this will dispatch
