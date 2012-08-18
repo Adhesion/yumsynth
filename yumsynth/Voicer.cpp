@@ -51,10 +51,17 @@ Voicer::~Voicer()
 float Voicer::evaluate()
 {
 	float temp = 0.0f;
+	int counter = 0;
 	for( int i = 0; i < numVoices; i++ )
 	{
 		temp += voices[ i ]->evaluate();
+		if ( voices[ i ]->isPlaying() )
+		{
+			counter++;
+		}
 	}
+	// mix voices based on whether they're active or not
+	temp = counter > 1 ? temp / (float)counter : temp;
 	return temp * volume;
 }
 

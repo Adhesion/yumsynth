@@ -48,10 +48,16 @@ void Operator::noteOff()
 {
 	currentEnvelopeState = release;
 	currentEnvelopeCounter = 0;
+	playing = false;
 }
 
 float Operator::evaluate()
 {
+	if ( !playing )
+	{
+		return 0.0f;
+	}
+
 	// cache is for further ops in chain - if >1 later operator evaluates us,
 	// we shouldn't calculate twice
 	if ( cache > -9999.0f )

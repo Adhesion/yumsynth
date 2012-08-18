@@ -56,6 +56,7 @@ float Voice::evaluate()
 		out += slots[ i ]->evaluate();
 	}
 	// divide by number of slots to mix properly
+	out = slots.size() > 1 ? out / (float)slots.size() : out;
 
 	// need to do postevaluate to clear caches, increment envelopes etc.
 	for( unsigned int i = 0; i < slots.size(); i++ )
@@ -147,7 +148,9 @@ void Voice::setOperatorArrangement( int type )
 		operators[ 2 ]->addInputOperator( operators[ 0 ] );
 		break;
 	case 4:
-		for( unsigned int i = operators.size() - 1; i > 0; i -= 2 )
+		// note, have to cast to (signed) int since the loop will check for a
+		// negative i
+		for( int i = (int)operators.size() - 1; i > 0; i -= 2 )
 		{
 			slots.push_back( operators[ i ] );
 			operators[ i ]->addInputOperator( operators[ i - 1 ] );
@@ -215,6 +218,12 @@ float Voice::getOperatorParam( int op, int param )
 
 bool Voice::isPlaying()
 {
-	// TODO aggregate values from operators - if one is playing, voice is playing
-	return false;
+	bool playing = false;
+	// aggregate values from output operators - if one is playing, voice is
+	// playing
+	for( unsigned int i = 0; i < slots.size(); i++ )
+	{
+		playing = playing || slots[ i ]->isPlaying();
+	}
+	return playing;
 }
