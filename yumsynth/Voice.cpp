@@ -112,32 +112,66 @@ void Voice::setOperatorArrangement( int type )
 		return;
 	}
 	operatorArrangement = type;
+
 	slots.clear();
+	for( unsigned int i = 0; i < operators.size(); i++ )
+	{
+		operators[ i ]->resetInputOperators();
+	}
+	
 	switch( type )
 	{
 	case 0:
-
+		slots.push_back( operators[ operators.size() - 1 ] );
+		for( unsigned int i = operators.size() - 1; i > 0; i-- )
+		{
+			operators[ i ]->addInputOperator( operators[ i - 1 ] );
+		}
 		break;
 	case 1:
-		
+		slots.push_back( operators[ 3 ] );
+		operators[ 3 ]->addInputOperator( operators[ 2 ] );
+		operators[ 2 ]->addInputOperator( operators[ 0 ] );
+		operators[ 2 ]->addInputOperator( operators[ 1 ] );
 		break;
 	case 2:
-
+		slots.push_back( operators[ 3 ] );
+		operators[ 3 ]->addInputOperator( operators[ 0 ] );
+		operators[ 3 ]->addInputOperator( operators[ 2 ] );
+		operators[ 2 ]->addInputOperator( operators[ 1 ] );
 		break;
 	case 3:
-
+		slots.push_back( operators[ 3 ] );
+		operators[ 3 ]->addInputOperator( operators[ 2 ] );
+		operators[ 3 ]->addInputOperator( operators[ 1 ] );
+		operators[ 2 ]->addInputOperator( operators[ 0 ] );
 		break;
 	case 4:
-
+		for( unsigned int i = operators.size() - 1; i > 0; i -= 2 )
+		{
+			slots.push_back( operators[ i ] );
+			operators[ i ]->addInputOperator( operators[ i - 1 ] );
+		}
 		break;
 	case 5:
-
+		for( unsigned int i = 1; i < operators.size(); i++ )
+		{
+			slots.push_back( operators[ i ] );
+			operators[ i ]->addInputOperator( operators[ 0 ] );
+		}
 		break;
 	case 6:
-
+		for( unsigned int i = 1; i < operators.size(); i++ )
+		{
+			slots.push_back( operators[ i ] );
+		}
+		operators[ 1 ]->addInputOperator( operators[ 0 ] );
 		break;
 	case 7:
-		
+		for( unsigned int i = 0; i < operators.size(); i++ )
+		{
+			slots.push_back( operators[ i ] );
+		}
 		break;
 	}
 }
