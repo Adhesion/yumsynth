@@ -13,13 +13,14 @@
 
 #include <vector>
 
-enum envelope
+enum operatorParams
 {
 	attack = 0,
 	decay,
 	sustain,
 	release,
-	envelopeStates
+	frequencyMult,
+	numOperatorParams
 };
 
 class Operator
@@ -46,19 +47,25 @@ public:
 
 	void setSamplerate( int sr );
 
+	void setParam( int param, float value );
+
 	void addInputOperator( Operator* in );
 	void resetInputOperators();
 
+	bool isPlaying();
+
 private:
 	float frequency;
-	float frequencyMultiplier;
 	float sineInput;
 	float sineIncrement;
 
-	float* envelopeVals;
+	float* params;
+
 	int currentEnvelopeState;
 	int currentEnvelopeCounter;
 	float getEnvelopeValue();
+
+	bool playing;
 
 	int samplerate;
 

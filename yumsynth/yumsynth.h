@@ -15,9 +15,15 @@
 
 class Voicer;
 
+/*
+ * Enum for representing all VST parameters.
+ * Operators occupy 20 spots at the moment (ADSR+frequency X 4).
+ */
 enum yParams
 {
 	arrangement = 0,
+	operatorParamBase,
+	volume = 21,
 	numYParams,
 	numYPrograms = 128
 };

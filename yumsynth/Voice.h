@@ -31,7 +31,14 @@ public:
 
 	int getNote();
 
+	/*
+	 * Operator arrangements mean which operators feed into which, and which
+	 * are the final outputs.
+	 */
 	void setOperatorArrangement( int type );
+	int getNumOperatorArrangements();
+
+	void setOperatorParam( int op, int param, float value );
 
 	// note that this means "is this voice sounding", ie, note could be off but
 	// voice is in release stage so it's still making sound (and thus can't be
@@ -46,6 +53,8 @@ private:
 	int numOperators;
 	std::vector< Operator* > operators;
 	std::vector< Operator* > slots;
+
+	int numOperatorArrangements;
 
 	// gotten from voicer at init
 	float* frequencyTable;

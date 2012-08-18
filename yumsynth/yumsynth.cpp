@@ -8,6 +8,7 @@
 
 #include "yumsynth.h"
 #include "Voicer.h"
+#include "Operator.h"
 
 AudioEffect* createEffectInstance( audioMasterCallback master )
 {
@@ -106,6 +107,37 @@ void yumsynth::resume()
 void yumsynth::setParameter( VstInt32 index, float value )
 {
 	parameters[ index ] = value;
+	if ( index == arrangement )
+	{
+		// need to scale to 0-numOperatorArrangements
+		// ie, 0.0 - 7.9999 for max 8
+		voicer->setOperatorArrangement(
+			(int)floor( value *
+			( (float)voicer->getNumOperatorArrangements() - 0.001f ) ) );
+	}
+	// handle all operator params here
+	else if ( index < volume )
+	{
+		int in = index - operatorParamBase;
+		int op = in / numOperatorParams;
+		int param = in % numOperatorParams;
+
+		// do some scaling here - maybe should be somewhere else?
+		if ( param == release )
+		{
+			param *= 2.0f;
+		}
+		else if ( param == frequencyMult )
+		{
+			param = floor( param * 10.0f );
+		}
+
+		voicer->setOperatorParam( op, param, value );
+	}
+	else if ( index == volume )
+	{
+		voicer->setVolume( value * 2.0f );
+	}
 }
 
 float yumsynth::getParameter( VstInt32 index )
@@ -120,7 +152,14 @@ void yumsynth::getParameterLabel( VstInt32 index, char* text )
 
 void yumsynth::getParameterDisplay( VstInt32 index, char* text )
 {
-	strcpy( text, "" );
+	if ( index == volume )
+	{
+		strcpy( text, "dB" );
+	}
+	else
+	{
+		strcpy( text, "" );
+	}
 }
 
 void yumsynth::getParameterName( VstInt32 index, char* text )

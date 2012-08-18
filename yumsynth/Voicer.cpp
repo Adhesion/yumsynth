@@ -35,6 +35,8 @@ Voicer::Voicer( int num )
 	{
 		voices.push_back( new Voice( frequencyTable, 4 ) );
 	}
+
+	volume = 1.0f;
 }
 
 Voicer::~Voicer()
@@ -99,4 +101,36 @@ void Voicer::setSamplerate( int sr )
 	{
 		voices[ i ]->setSamplerate( sr );
 	}
+}
+
+void Voicer::setOperatorArrangement( int type )
+{
+	for( int i = 0; i < numVoices; i++ )
+	{
+		voices[ i ]->setOperatorArrangement( type );
+	}
+}
+
+int Voicer::getNumOperatorArrangements()
+{
+	// assume they all have the same amount since it's in their constructor
+	return voices[ 0 ]->getNumOperatorArrangements();
+}
+
+void Voicer::setOperatorParam( int op, int param, float value )
+{
+	// maybe allow for per-voice differences in the future
+	for( int i = 0; i < numVoices; i++ )
+	{
+		voices[ i ]->setOperatorParam( op, param, value );
+	}
+}
+
+void Voicer::setVolume( float in )
+{
+	if ( volume < 0.0f || volume > 10.0f )
+	{
+		return;
+	}
+	volume = in;
 }

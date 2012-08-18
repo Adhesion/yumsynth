@@ -29,7 +29,16 @@ public:
 
 	void setSamplerate( int sr );
 
+	void setOperatorArrangement( int type );
+	int getNumOperatorArrangements();
+
+	void setOperatorParam( int op, int param, float value );
+
+	void setVolume( float in );
+
 private:
+	float volume;
+
 	std::vector< Voice* > voices;
 	int numVoices;
 

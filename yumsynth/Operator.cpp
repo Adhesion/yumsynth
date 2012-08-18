@@ -13,17 +13,20 @@ Operator::Operator()
 	cache = -9999.9f;
 
 	frequency = 0.0f;
-	frequencyMultiplier = 0.0f;
 	sineInput = 0.0f;
 	sineIncrement = 0.0f;
 
 	currentEnvelopeState = attack;
 	currentEnvelopeCounter = 0;
+
+	playing = false;
+
+	params = new float[ numOperatorParams ];
 }
 
 Operator::~Operator()
 {
-
+	delete[] params;
 }
 
 void Operator::noteOn( float freq )
@@ -32,11 +35,13 @@ void Operator::noteOn( float freq )
 	sineInput = 0.0f;
 	// period of the sine wave is (1/freq) * samplerate samples, so for each
 	// sample we should increment inverse * 2PI (since it's in radians)
-	sineIncrement = frequency * frequencyMultiplier * 2.0f * (float)PI /
+	sineIncrement = frequency * params[ frequencyMult ] * 2.0f * (float)PI /
 		(float)samplerate;
 
 	currentEnvelopeState = attack;
 	currentEnvelopeCounter = 0;
+
+	playing = true;
 }
 
 void Operator::noteOff()
@@ -47,8 +52,8 @@ void Operator::noteOff()
 
 float Operator::evaluate()
 {
-	// cache is for further ops in chain - if >1 evaluates us, we shouldn't
-	// calculate twice
+	// cache is for further ops in chain - if >1 later operator evaluates us,
+	// we shouldn't calculate twice
 	if ( cache > -9999.0f )
 	{
 		return cache;
@@ -82,6 +87,8 @@ void Operator::postEvaluate()
 
 	// increment envelope
 
+	// if release if over, set playing to false
+
 	// reset cache
 	cache = -9999.9f;
 }
@@ -91,7 +98,7 @@ void Operator::setSamplerate( int sr )
 	samplerate = sr;
 	// have to update increment here, in case note is sounding when samplerate
 	// changed
-	sineIncrement = frequency * frequencyMultiplier * 2.0f * (float)PI /
+	sineIncrement = frequency * params[ frequencyMult ] * 2.0f * (float)PI /
 		(float)samplerate;
 }
 
@@ -103,6 +110,11 @@ void Operator::addInputOperator( Operator* in )
 void Operator::resetInputOperators()
 {
 	inputs.clear();
+}
+
+bool Operator::isPlaying()
+{
+	return playing;
 }
 
 float Operator::getEnvelopeValue()
