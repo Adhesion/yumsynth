@@ -23,7 +23,18 @@ yumsynth::yumsynth( audioMasterCallback master )
 
 	version = 100;
 
+	// note these all have to be 0.0-1.0 since they directly get used for
+	// getParameter()
 	parameters[ arrangement ] = 0.0f;
+	for( int i = operatorParamBase; i < volume; i += numOperatorParams )
+	{
+		parameters[ i + attack ] = 0.1f;
+		parameters[ i + decay ] = 0.1f;
+		parameters[ i + sustain ] = 0.7f;
+		parameters[ i + release ] = 0.2f;
+		parameters[ i + frequencyMult ] = 0.0f;
+	}
+	parameters[ volume ] = 1.0f;
 
 	programs = new yumsynthProgram[ numYPrograms ];
 	for( int i = 0; i < numYPrograms; i++ )
@@ -47,6 +58,13 @@ yumsynth::yumsynth( audioMasterCallback master )
 	
 	// 6 voices for now
 	voicer = new Voicer( 6 );
+
+	// update voice(r) etc values with init params
+	// TODO better way to do this?
+	for( int i = 0; i < numYParams; i++ )
+	{
+		setParameter( i, parameters[ i ] );
+	}
 }
 
 yumsynth::~yumsynth()
