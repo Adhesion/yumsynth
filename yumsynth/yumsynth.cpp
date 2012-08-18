@@ -10,6 +10,8 @@
 #include "Voicer.h"
 #include "Operator.h"
 
+#include <sstream>
+
 AudioEffect* createEffectInstance( audioMasterCallback master )
 {
 	return new yumsynth( master );
@@ -23,6 +25,7 @@ yumsynth::yumsynth( audioMasterCallback master )
 
 	version = 100;
 
+	// setup defaults
 	// note these all have to be 0.0-1.0 since they directly get used for
 	// getParameter()
 	parameters[ arrangement ] = 0.0f;
@@ -174,8 +177,8 @@ void yumsynth::getParameterName( VstInt32 index, char* text )
 	}
 	else if ( index < volume )
 	{
-		std::string temp;
 		std::string paramTemp;
+		std::stringstream stream;
 
 		int in = index - operatorParamBase;
 		int op = in / numOperatorParams;
@@ -200,10 +203,8 @@ void yumsynth::getParameterName( VstInt32 index, char* text )
 			break;
 		}
 
-		temp = "Operator " + op;
-		temp += " ";
-		temp += paramTemp;
-		strcpy( text, temp.c_str() );
+		stream << "Operator " << op << " " << paramTemp;
+		strcpy( text, stream.str().c_str() );
 	}
 	else if ( index == volume )
 	{
