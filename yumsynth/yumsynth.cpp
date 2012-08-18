@@ -34,7 +34,7 @@ yumsynth::yumsynth( audioMasterCallback master )
 		parameters[ i + release ] = 0.2f;
 		parameters[ i + frequencyMult ] = 0.0f;
 	}
-	parameters[ volume ] = 1.0f;
+	parameters[ volume ] = 0.5f;
 
 	programs = new yumsynthProgram[ numYPrograms ];
 	for( int i = 0; i < numYPrograms; i++ )
@@ -146,11 +146,11 @@ void yumsynth::setParameter( VstInt32 index, float value )
 		// do some scaling here - maybe should be somewhere else?
 		if ( param == release )
 		{
-			param *= 2.0f;
+			value *= 2.0f;
 		}
 		else if ( param == frequencyMult )
 		{
-			param = floor( param * 10.0f );
+			value = floor( value * 10.0f + 1.0f );
 		}
 
 		voicer->setOperatorParam( op, param, value );
