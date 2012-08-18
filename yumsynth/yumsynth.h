@@ -56,9 +56,9 @@ public:
 	
 	void setParameter( VstInt32 index, float value );
 	float getParameter( VstInt32 index );
-	void getParameterLabel( VstInt32 index, char* text );
-	void getParameterDisplay( VstInt32 index, char* text );
 	void getParameterName( VstInt32 index, char* text );
+	void getParameterDisplay( VstInt32 index, char* text );
+	void getParameterLabel( VstInt32 index, char* text );
 
 	void setProgramName( char* name );
 	void getProgramName( char* name );

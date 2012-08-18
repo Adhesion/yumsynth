@@ -87,7 +87,7 @@ void Operator::postEvaluate()
 
 	// increment envelope
 
-	// if release if over, set playing to false
+	// if release is over, set playing to false
 
 	// reset cache
 	cache = -9999.9f;
@@ -100,6 +100,24 @@ void Operator::setSamplerate( int sr )
 	// changed
 	sineIncrement = frequency * params[ frequencyMult ] * 2.0f * (float)PI /
 		(float)samplerate;
+}
+
+float Operator::getParam( int param )
+{
+	if ( param < 0 || param >= numOperatorParams )
+	{
+		return -9999.9f;
+	}
+	return params[ param ];
+}
+
+void Operator::setParam( int param, float value )
+{
+	if ( param < 0 || param >= numOperatorParams )
+	{
+		return;
+	}
+	params[ param ] = value;
 }
 
 void Operator::addInputOperator( Operator* in )

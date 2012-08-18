@@ -36,9 +36,13 @@ public:
 	 * are the final outputs.
 	 */
 	void setOperatorArrangement( int type );
+	int getOperatorArrangement();
 	int getNumOperatorArrangements();
+	// maybe move the descriptions higher? no different per voice probably
+	std::string getOperatorArrangementDescription( int type );
 
 	void setOperatorParam( int op, int param, float value );
+	float getOperatorParam( int op, int param );
 
 	// note that this means "is this voice sounding", ie, note could be off but
 	// voice is in release stage so it's still making sound (and thus can't be
@@ -54,7 +58,10 @@ private:
 	std::vector< Operator* > operators;
 	std::vector< Operator* > slots;
 
+	int operatorArrangement;
 	int numOperatorArrangements;
+	// see above, should move this?
+	std::vector< std::string > operatorArrangementDescriptions;
 
 	// gotten from voicer at init
 	float* frequencyTable;

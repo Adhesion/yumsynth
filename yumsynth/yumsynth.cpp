@@ -28,7 +28,10 @@ yumsynth::yumsynth( audioMasterCallback master )
 	programs = new yumsynthProgram[ numYPrograms ];
 	for( int i = 0; i < numYPrograms; i++ )
 	{
-		programs[ i ].parameters[ arrangement ] = parameters[ arrangement ];
+		for( int j = 0; j < numYParams; j++ )
+		{
+			programs[ i ].parameters[ j ] = parameters[ j ];
+		}
 		strcpy( programs[ i ].name, "Init" );
 	}
 
@@ -145,12 +148,83 @@ float yumsynth::getParameter( VstInt32 index )
 	return parameters[ index ];
 }
 
-void yumsynth::getParameterLabel( VstInt32 index, char* text )
+void yumsynth::getParameterName( VstInt32 index, char* text )
 {
-	strcpy( text, "" );
+	if ( index == arrangement )
+	{
+		strcpy( text, "Operator Arrangement" );
+	}
+	else if ( index < volume )
+	{
+		std::string temp;
+		std::string paramTemp;
+
+		int in = index - operatorParamBase;
+		int op = in / numOperatorParams;
+		int param = in % numOperatorParams;
+
+		switch( param )
+		{
+		case attack:
+			paramTemp = "Attack";
+			break;
+		case decay:
+			paramTemp = "Decay";
+			break;
+		case sustain:
+			paramTemp = "Sustain";
+			break;
+		case release:
+			paramTemp = "Release";
+			break;
+		case frequencyMult:
+			paramTemp = "Frequency";
+			break;
+		}
+
+		temp = "Operator " + op;
+		temp += " ";
+		temp += paramTemp;
+		strcpy( text, temp.c_str() );
+	}
+	else if ( index == volume )
+	{
+		strcpy( text, "Volume" );
+	}
+	else
+	{
+		strcpy( text, "" );
+	}
 }
 
 void yumsynth::getParameterDisplay( VstInt32 index, char* text )
+{
+	if ( index == arrangement )
+	{
+		std::string desc = voicer->getOperatorArrangementDescription(
+			voicer->getOperatorArrangement() );
+		strcpy( text, desc.c_str() );
+	}
+	else if ( index < volume )
+	{
+		int in = index - operatorParamBase;
+		int op = in / numOperatorParams;
+		int param = in % numOperatorParams;
+
+		float2string( voicer->getOperatorParam( op, param ), text,
+			kVstMaxParamStrLen );
+	}
+	else if ( index == volume )
+	{
+		dB2string( voicer->getVolume(), text, kVstMaxParamStrLen );
+	}
+	else
+	{
+		strcpy( text, "" );
+	}
+}
+
+void yumsynth::getParameterLabel( VstInt32 index, char* text )
 {
 	if ( index == volume )
 	{
@@ -160,11 +234,6 @@ void yumsynth::getParameterDisplay( VstInt32 index, char* text )
 	{
 		strcpy( text, "" );
 	}
-}
-
-void yumsynth::getParameterName( VstInt32 index, char* text )
-{
-	strcpy( text, "" );
 }
 
 void yumsynth::setProgramName( char* name )

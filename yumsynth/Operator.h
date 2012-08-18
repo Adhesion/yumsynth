@@ -47,6 +47,7 @@ public:
 
 	void setSamplerate( int sr );
 
+	float getParam( int param );
 	void setParam( int param, float value );
 
 	void addInputOperator( Operator* in );

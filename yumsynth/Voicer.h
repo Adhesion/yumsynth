@@ -29,12 +29,20 @@ public:
 
 	void setSamplerate( int sr );
 
+	/*
+	 * Getters/setters for how each voice's operators are arranged - for now
+	 * all have same settings.
+	 */
 	void setOperatorArrangement( int type );
+	int getOperatorArrangement();
 	int getNumOperatorArrangements();
+	std::string getOperatorArrangementDescription( int type );
 
 	void setOperatorParam( int op, int param, float value );
+	float getOperatorParam( int op, int param );
 
 	void setVolume( float in );
+	float getVolume();
 
 private:
 	float volume;

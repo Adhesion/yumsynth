@@ -55,7 +55,7 @@ float Voicer::evaluate()
 	{
 		temp += voices[ i ]->evaluate();
 	}
-	return temp;
+	return temp * volume;
 }
 
 void Voicer::noteOn( int note )
@@ -111,10 +111,20 @@ void Voicer::setOperatorArrangement( int type )
 	}
 }
 
+int Voicer::getOperatorArrangement()
+{
+	return voices[ 0 ]->getOperatorArrangement();
+}
+
 int Voicer::getNumOperatorArrangements()
 {
 	// assume they all have the same amount since it's in their constructor
 	return voices[ 0 ]->getNumOperatorArrangements();
+}
+
+std::string Voicer::getOperatorArrangementDescription( int type )
+{
+	return voices[ 0 ]->getOperatorArrangementDescription( type );
 }
 
 void Voicer::setOperatorParam( int op, int param, float value )
@@ -126,6 +136,12 @@ void Voicer::setOperatorParam( int op, int param, float value )
 	}
 }
 
+float Voicer::getOperatorParam( int op, int param )
+{
+	// again, assume they all have the same values for now
+	return voices[ 0 ]->getOperatorParam( op, param );
+}
+
 void Voicer::setVolume( float in )
 {
 	if ( volume < 0.0f || volume > 10.0f )
@@ -133,4 +149,9 @@ void Voicer::setVolume( float in )
 		return;
 	}
 	volume = in;
+}
+
+float Voicer::getVolume()
+{
+	return volume;
 }

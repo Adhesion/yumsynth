@@ -26,7 +26,17 @@ Voice::Voice( float* freq, int numOps )
 		operators.push_back( o );
 	}
 
+	operatorArrangement = 0;
 	numOperatorArrangements = 8;
+
+	operatorArrangementDescriptions.push_back( std::string( "1>2>3>4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1+2>3>4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1+(2>3)>4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "(1>2)+3>4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1>2,3>4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1>2,1>3,1>4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1>2,3,4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1,2,3,4" ) );
 }
 
 Voice::~Voice()
@@ -101,6 +111,7 @@ void Voice::setOperatorArrangement( int type )
 	{
 		return;
 	}
+	operatorArrangement = type;
 	slots.clear();
 	switch( type )
 	{
@@ -110,20 +121,62 @@ void Voice::setOperatorArrangement( int type )
 	case 1:
 		
 		break;
-
 	case 2:
 
 		break;
-
 	case 3:
 
 		break;
+	case 4:
+
+		break;
+	case 5:
+
+		break;
+	case 6:
+
+		break;
+	case 7:
+		
+		break;
 	}
+}
+
+int Voice::getOperatorArrangement()
+{
+	return operatorArrangement;
 }
 
 int Voice::getNumOperatorArrangements()
 {
 	return numOperatorArrangements;
+}
+
+std::string Voice::getOperatorArrangementDescription( int type )
+{
+	if ( type < 0 || type >= numOperatorArrangements )
+	{
+		return "";
+	}
+	return operatorArrangementDescriptions[ type ];
+}
+
+void Voice::setOperatorParam( int op, int param, float value )
+{
+	if ( op < 0 || op >= numOperators )
+	{
+		return;
+	}
+	operators[ op ]->setParam( param, value );
+}
+
+float Voice::getOperatorParam( int op, int param )
+{
+	if ( op < 0 || op >= numOperators )
+	{
+		return -9999.9f;
+	}
+	return operators[ op ]->getParam( param );
 }
 
 bool Voice::isPlaying()
