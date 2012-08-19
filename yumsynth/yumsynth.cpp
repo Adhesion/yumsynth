@@ -153,7 +153,7 @@ void yumsynth::setParameter( VstInt32 index, float value )
 		}
 		else if ( param == frequencyMult )
 		{
-			value = floor( value * 10.0f + 1.0f );
+			value = floor( value * 99.0f + 1.0f );
 		}
 
 		voicer->setOperatorParam( op, param, value );

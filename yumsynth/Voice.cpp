@@ -59,9 +59,9 @@ float Voice::evaluate()
 	out = slots.size() > 1 ? out / (float)slots.size() : out;
 
 	// need to do postevaluate to clear caches, increment envelopes etc.
-	for( unsigned int i = 0; i < slots.size(); i++ )
+	for( unsigned int i = 0; i < operators.size(); i++ )
 	{
-		slots[ i ]->postEvaluate();
+		operators[ i ]->postEvaluate();
 	}
 
 	return out;
@@ -108,7 +108,8 @@ int Voice::getNote()
 
 void Voice::setOperatorArrangement( int type )
 {
-	if ( type < 0 || type > numOperatorArrangements )
+	if ( type < 0 || type > numOperatorArrangements ||
+		type == operatorArrangement )
 	{
 		return;
 	}
@@ -120,6 +121,9 @@ void Voice::setOperatorArrangement( int type )
 		operators[ i ]->resetInputOperators();
 	}
 	
+	// set up operator arrangment by both setting slots (final outputs) and
+	// linking operators together. kind of arbitrary, not necessarily
+	// generalizable
 	switch( type )
 	{
 	case 0:
