@@ -77,7 +77,7 @@ float Operator::evaluate()
 
 	float tempFreq = ( frequency * params[ frequencyMult ] ) + ( in * 100.0f * inputs.size() );
 	sineIncrement = tempFreq * 2.0f * (float)PI / (float)samplerate;
-	// increment value used to calculate frequency
+	// increment value used to calculate frequency (phase)
 	sineInput += sineIncrement;
 	// keep in 0-2PI range
 	if ( sineInput >= 2.0f * PI )

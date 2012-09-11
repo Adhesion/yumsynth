@@ -27,7 +27,7 @@ Voice::Voice( float* freq, int numOps )
 	}
 
 	operatorArrangement = 0;
-	numOperatorArrangements = 8;
+	numOperatorArrangements = 10;
 
 	operatorArrangementDescriptions.push_back( std::string( "1>2>3>4" ) );
 	operatorArrangementDescriptions.push_back( std::string( "1+2>3>4" ) );
@@ -37,6 +37,8 @@ Voice::Voice( float* freq, int numOps )
 	operatorArrangementDescriptions.push_back( std::string( "1>2,1>3,1>4" ) );
 	operatorArrangementDescriptions.push_back( std::string( "1>2,3,4" ) );
 	operatorArrangementDescriptions.push_back( std::string( "1,2,3,4" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1>2" ) );
+	operatorArrangementDescriptions.push_back( std::string( "1" ) );
 }
 
 Voice::~Voice()
@@ -179,6 +181,13 @@ void Voice::setOperatorArrangement( int type )
 		{
 			slots.push_back( operators[ i ] );
 		}
+		break;
+	case 8:
+		slots.push_back( operators[ 1 ] );
+		operators[ 1 ]->addInputOperator( operators[ 0 ] );
+		break;
+	case 9:
+		slots.push_back( operators[ 0 ] );
 		break;
 	}
 }
