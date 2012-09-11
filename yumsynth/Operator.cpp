@@ -48,7 +48,6 @@ void Operator::noteOff()
 {
 	currentEnvelopeState = release;
 	currentEnvelopeCounter = 0;
-	playing = false;
 }
 
 float Operator::evaluate()
@@ -86,6 +85,7 @@ float Operator::evaluate()
 	}
 
 	float out = sin( sineInput ) * getEnvelopeValue();
+	currentEnvelopeCounter++;
 	cache = out;
 
 	return out;
@@ -93,10 +93,6 @@ float Operator::evaluate()
 
 void Operator::postEvaluate()
 {
-	// increment envelope
-
-	// if release is over, set playing to false
-
 	// reset cache
 	cache = -9999.9f;
 }
@@ -154,5 +150,50 @@ bool Operator::isPlaying()
 
 float Operator::getEnvelopeValue()
 {
-	return 1.0f;
+	float out = 1.0f;
+
+	// A,D,R are times in seconds, S is level (progress also in seconds)
+	float progress = (float)currentEnvelopeCounter / (float)samplerate;
+
+	// check/increment state if necessary
+	if ( currentEnvelopeState != sustain &&
+		progress > params[ currentEnvelopeState ] )
+	{
+		// if release is done, we're not playing anymore
+		if ( currentEnvelopeState == release )
+		{
+			playing = false;
+			return 0.0f;
+		}
+		// for attack/decay, go to subsequent state
+		else
+		{
+			currentEnvelopeCounter = 0;
+			progress = (float)currentEnvelopeCounter / (float)samplerate;
+			currentEnvelopeState++;
+		}
+	}
+
+	switch ( currentEnvelopeState )
+	{
+	case attack:
+		// go from 0->1 from 0-max attack time
+		out = progress / params[ attack ];
+		break;
+	case decay:
+		// go from 1->sustain
+		out = 1.0f -
+			( ( progress / params[ decay ] ) * ( 1.0f - params[ sustain ] ) );
+		break;
+	case sustain:
+		out = params[ sustain ];
+		break;
+	case release:
+		// go from sustain->0
+		out = params[ sustain ] -
+			( ( progress / params[ release ] ) * params[ sustain ] );
+		break;
+	}
+
+	return out;
 }
