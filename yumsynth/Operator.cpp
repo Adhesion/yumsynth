@@ -33,8 +33,6 @@ void Operator::noteOn( float freq )
 {
 	frequency = freq;
 	sineInput = 0.0f;
-	// period of the sine wave is (1/freq) * samplerate samples, so for each
-	// sample we should increment inverse * 2PI (since it's in radians)
 	//sineIncrement = frequency * params[ frequencyMult ] * 2.0f * (float)PI /
 		//(float)samplerate;
 
@@ -69,12 +67,14 @@ float Operator::evaluate()
 	float in = 0.0f;
 	for( unsigned int i = 0; i < inputs.size(); i++ )
 	{
-		in += inputs[ i ]->evaluate();
+		in += inputs[ i ]->evaluate() * frequency * inputs[ i ]->getParam( frequencyMult );
 	}
 	// mix inputs properly - no need to div by 1 either
-	in = inputs.size() > 1 ? in / (float)inputs.size() : in;
+	//in = inputs.size() > 1 ? in / (float)inputs.size() : in;
 
-	float tempFreq = ( frequency * params[ frequencyMult ] ) + ( in * 100.0f * inputs.size() );
+	// period of the sine wave is (1/freq) * samplerate samples, so for each
+	// sample we should increment inverse * 2PI (since it's in radians)
+	float tempFreq = ( frequency * params[ frequencyMult ] ) + ( in );
 	sineIncrement = tempFreq * 2.0f * (float)PI / (float)samplerate;
 	// increment value used to calculate frequency (phase)
 	sineInput += sineIncrement;
