@@ -9,6 +9,7 @@
 #include "yumsynth.h"
 #include "Voicer.h"
 #include "Operator.h"
+#include "scale.h"
 
 #include <sstream>
 
@@ -35,7 +36,8 @@ yumsynth::yumsynth( audioMasterCallback master )
 		parameters[ i + decay ] = 0.1f;
 		parameters[ i + sustain ] = 0.7f;
 		parameters[ i + release ] = 0.2f;
-		parameters[ i + frequencyMult ] = 0.0f;
+		// have to set frequency mult to 1x, not lowest value (which is 0.5x)
+		parameters[ i + frequencyMult ] = linearDescale( 1.0f, 0.0f, 15.0f );
 	}
 	parameters[ volume ] = 0.5f;
 
@@ -147,13 +149,28 @@ void yumsynth::setParameter( VstInt32 index, float value )
 		int param = in % numOperatorParams;
 
 		// do some scaling here - maybe should be somewhere else?
-		if ( param == release )
+		switch ( param )
 		{
-			value *= 2.0f;
-		}
-		else if ( param == frequencyMult )
-		{
-			value = floor( value * 15.0f + 1.0f );
+		case attack:
+			value = linearScale( value, 0.001f, 1.0f );
+			break;
+		case decay:
+			value = linearScale( value, 0.001f, 1.0f );
+			break;
+		case sustain:
+			// straight 0-1 for sustain is fine, no need to change
+			break;
+		case release:
+			value = linearScale( value, 0.001f, 2.0f );
+			break;
+		case frequencyMult:
+			value = floorScale( value, 0.0f, 15.0f );
+			// force 0.5x mult as lowest value
+			if ( value < 0.001f )
+			{
+				value = 0.5f;
+			}
+			break;
 		}
 
 		voicer->setOperatorParam( op, param, value );

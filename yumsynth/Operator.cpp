@@ -67,14 +67,16 @@ float Operator::evaluate()
 	float in = 0.0f;
 	for( unsigned int i = 0; i < inputs.size(); i++ )
 	{
-		in += inputs[ i ]->evaluate() * frequency * inputs[ i ]->getParam( frequencyMult );
+		// maximum amount of modulation is based on the modulator's frequency
+		in += inputs[ i ]->evaluate() * frequency *
+			inputs[ i ]->getParam( frequencyMult );
 	}
 	// mix inputs properly - no need to div by 1 either
-	//in = inputs.size() > 1 ? in / (float)inputs.size() : in;
+	in = inputs.size() > 1 ? in / (float)inputs.size() : in;
 
 	// period of the sine wave is (1/freq) * samplerate samples, so for each
 	// sample we should increment inverse * 2PI (since it's in radians)
-	float tempFreq = ( frequency * params[ frequencyMult ] ) + ( in );
+	float tempFreq = ( frequency * params[ frequencyMult ] ) + in;
 	sineIncrement = tempFreq * 2.0f * (float)PI / (float)samplerate;
 	// increment value used to calculate frequency (phase)
 	sineInput += sineIncrement;

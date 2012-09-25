@@ -56,6 +56,9 @@
     <ClInclude Include="Voice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yumsynth.cpp">
@@ -77,6 +80,9 @@
       <Filter>VST source</Filter>
     </ClCompile>
     <ClCompile Include="Voice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
