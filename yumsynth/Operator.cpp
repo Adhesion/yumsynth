@@ -18,6 +18,7 @@ Operator::Operator()
 
 	currentEnvelopeState = attack;
 	currentEnvelopeCounter = 0;
+	releaseLevel = 0;
 
 	playing = false;
 
@@ -191,10 +192,15 @@ float Operator::getEnvelopeValue()
 		out = params[ sustain ];
 		break;
 	case release:
-		// go from sustain->0
-		out = params[ sustain ] -
-			( ( progress / params[ release ] ) * params[ sustain ] );
+		// go from last level->0
+		out = releaseLevel -
+			( ( progress / params[ release ] ) * releaseLevel );
 		break;
+	}
+
+	if ( currentEnvelopeState != release )
+	{
+		releaseLevel = out;
 	}
 
 	return out;

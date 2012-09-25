@@ -65,6 +65,11 @@ private:
 	int currentEnvelopeState;
 	int currentEnvelopeCounter;
 	float getEnvelopeValue();
+	/*
+	 * Last envelope level - needed when calculating release if released before
+	 * sustain.
+	 */
+	float releaseLevel;
 
 	bool playing;
 
