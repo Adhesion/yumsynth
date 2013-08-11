@@ -38,6 +38,7 @@ yumsynth::yumsynth( audioMasterCallback master )
 		parameters[ i + release ] = 0.2f;
 		// have to set frequency mult to 1x, not lowest value (which is 0.5x)
 		parameters[ i + frequencyMult ] = linearDescale( 1.0f, 0.0f, 15.0f );
+		parameters[ i + FMindex ] = 0.0f;
 	}
 	parameters[ volume ] = 0.5f;
 
@@ -170,6 +171,9 @@ void yumsynth::setParameter( VstInt32 index, float value )
 			{
 				value = 0.5f;
 			}
+			break;
+		case FMindex:
+			value = linearScale( value, 0.0f, 30.0f );
 			break;
 		}
 

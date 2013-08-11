@@ -20,6 +20,7 @@ enum operatorParams
 	sustain,
 	release,
 	frequencyMult,
+	FMindex,
 	numOperatorParams
 };
 

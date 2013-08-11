@@ -68,9 +68,10 @@ float Operator::evaluate()
 	float in = 0.0f;
 	for( unsigned int i = 0; i < inputs.size(); i++ )
 	{
-		// maximum amount of modulation is based on the modulator's frequency
-		in += inputs[ i ]->evaluate() * frequency *
-			inputs[ i ]->getParam( frequencyMult );
+		// maximum amount of modulation is based our frequency times the input's
+		// FM index
+		in += inputs[ i ]->evaluate() * frequency * params[ frequencyMult ] *
+			  inputs[ i ]->getParam( FMindex );
 	}
 	// mix inputs properly - no need to div by 1 either
 	in = inputs.size() > 1 ? in / (float)inputs.size() : in;
