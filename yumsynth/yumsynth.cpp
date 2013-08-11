@@ -194,7 +194,7 @@ void yumsynth::getParameterName( VstInt32 index, char* text )
 {
 	if ( index == arrangement )
 	{
-		strcpy( text, "Operator Arrangement" );
+		strcpy( text, "OP Arrangement" );
 	}
 	else if ( index < volume )
 	{
@@ -202,7 +202,7 @@ void yumsynth::getParameterName( VstInt32 index, char* text )
 		std::stringstream stream;
 
 		int in = index - operatorParamBase;
-		int op = in / numOperatorParams;
+		int op = ( in / numOperatorParams ) + 1; // number OPs 1-4 not 0-3
 		int param = in % numOperatorParams;
 
 		switch( param )
@@ -222,9 +222,12 @@ void yumsynth::getParameterName( VstInt32 index, char* text )
 		case frequencyMult:
 			paramTemp = "Frequency";
 			break;
+		case FMindex:
+			paramTemp = "FM Index";
+			break;
 		}
 
-		stream << "Operator " << op << " " << paramTemp;
+		stream << "OP" << op << " " << paramTemp;
 		strcpy( text, stream.str().c_str() );
 	}
 	else if ( index == volume )
